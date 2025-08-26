@@ -56,6 +56,14 @@ class CGPACalculator {
         document.getElementById('course-name-input').addEventListener('keydown', (e) => {
             if (e.key === 'Enter') this.addCourseInline();
         });
+
+        // Mobile navigation
+        document.querySelectorAll('.mobile-nav-item').forEach(btn => {
+            btn.addEventListener('click', (e) => this.switchMobileTab(e.currentTarget.dataset.mobileTab));
+        });
+
+        // Mobile functionality
+        this.initializeMobileEventListeners();
     }
 
     switchTab(tabName) {
@@ -117,20 +125,25 @@ class CGPACalculator {
     selectStudent(studentId) {
         this.currentStudent = this.students.find(s => s.id === studentId) || null;
         this.courses = this.currentStudent ? [...this.currentStudent.courses] : [];
+
+        // Sync both selects
+        document.getElementById('student-select').value = studentId;
+        document.getElementById('mobile-student-select').value = studentId;
+
         this.updateDisplay();
         this.updateCourseTable();
+        this.updateMobileCourseList();
     }
 
     loadStudents() {
         const select = document.getElementById('student-select');
-        select.innerHTML = '<option value="">Choose a student...</option>';
+        const mobileSelect = document.getElementById('mobile-student-select');
 
-        this.students.forEach(student => {
-            const option = document.createElement('option');
-            option.value = student.id;
-            option.textContent = student.name;
-            select.appendChild(option);
-        });
+        const optionHTML = '<option value="">Choose a student...</option>' +
+            this.students.map(student => `<option value="${student.id}">${student.name}</option>`).join('');
+
+        select.innerHTML = optionHTML;
+        mobileSelect.innerHTML = optionHTML;
     }
 
     saveStudents() {
@@ -443,30 +456,42 @@ class CGPACalculator {
     updateDisplay() {
         const stats = this.calculateCGPA();
 
-        // Update sidebar summary
+        // Update desktop summary
         document.getElementById('total-quality-points').textContent = stats.totalQualityPoints.toFixed(1);
         document.getElementById('credits-earned').textContent = stats.totalCredits;
         document.getElementById('current-cgpa').textContent = stats.cgpa.toFixed(2);
 
-        // Update summary tab
+        // Update desktop summary tab
         document.getElementById('summary-quality-points').textContent = stats.totalQualityPoints.toFixed(1);
         document.getElementById('summary-credits').textContent = stats.totalCredits;
         document.getElementById('summary-cgpa').textContent = stats.cgpa.toFixed(2);
 
+        // Update mobile summary
+        document.getElementById('mobile-total-quality-points').textContent = stats.totalQualityPoints.toFixed(1);
+        document.getElementById('mobile-credits-earned').textContent = stats.totalCredits;
+        document.getElementById('mobile-current-cgpa').textContent = stats.cgpa.toFixed(2);
+
+        // Update mobile detailed summary
+        document.getElementById('mobile-summary-quality-points').textContent = stats.totalQualityPoints.toFixed(1);
+        document.getElementById('mobile-summary-credits').textContent = stats.totalCredits;
+        document.getElementById('mobile-summary-cgpa').textContent = stats.cgpa.toFixed(2);
+
         // Update welcome message
         const welcomeMessage = document.getElementById('welcome-message');
-        if (this.currentStudent) {
-            welcomeMessage.innerHTML = `
-                <h2>Welcome, ${this.currentStudent.name}!</h2>
-                <p>Current CGPA: <strong>${stats.cgpa.toFixed(2)}</strong></p>
-                <p>Total Credits: <strong>${stats.totalCredits}</strong></p>
-                <p>Use the Course Management tab to add courses and calculate your projected CGPA.</p>
-            `;
-        } else {
-            welcomeMessage.innerHTML = `
-                <h2>Welcome to CGPA Calculator</h2>
-                <p>Add a student to get started with calculating CGPA.</p>
-            `;
+        if (welcomeMessage) {
+            if (this.currentStudent) {
+                welcomeMessage.innerHTML = `
+                    <h2>Welcome, ${this.currentStudent.name}!</h2>
+                    <p>Current CGPA: <strong>${stats.cgpa.toFixed(2)}</strong></p>
+                    <p>Total Credits: <strong>${stats.totalCredits}</strong></p>
+                    <p>Use the Course Management tab to add courses and calculate your projected CGPA.</p>
+                `;
+            } else {
+                welcomeMessage.innerHTML = `
+                    <h2>Welcome to CGPA Calculator</h2>
+                    <p>Add a student to get started with calculating CGPA.</p>
+                `;
+            }
         }
     }
 
@@ -485,6 +510,161 @@ class CGPACalculator {
             document.body.classList.add('light-theme');
             document.querySelector('.theme-toggle').textContent = '☀️';
         }
+    }
+
+    initializeMobileEventListeners() {
+        // Mobile student management
+        document.getElementById('mobile-add-student-btn').addEventListener('click', () => this.openStudentModal());
+        document.getElementById('mobile-student-select').addEventListener('change', (e) => this.selectStudent(e.target.value));
+
+        // Mobile course management
+        document.getElementById('mobile-add-course-btn').addEventListener('click', () => this.addMobileCourse());
+        document.getElementById('mobile-credits-select').addEventListener('change', (e) => this.toggleMobileCustomCredits(e.target.value));
+        document.getElementById('mobile-grade-select').addEventListener('change', (e) => this.toggleMobileCustomGPA(e.target.value));
+    }
+
+    switchMobileTab(tabName) {
+        // Update mobile nav buttons
+        document.querySelectorAll('.mobile-nav-item').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        document.querySelector(`[data-mobile-tab="${tabName}"]`).classList.add('active');
+
+        // Hide all mobile sections
+        document.getElementById('mobile-user-section').style.display = tabName === 'user' ? 'block' : 'none';
+        document.getElementById('mobile-summary-section').style.display = tabName === 'user' ? 'block' : 'none';
+        document.getElementById('mobile-course-section').style.display = tabName === 'course' ? 'block' : 'none';
+        document.getElementById('mobile-detailed-summary-section').style.display = tabName === 'summary' ? 'block' : 'none';
+    }
+
+    toggleMobileCustomCredits(value) {
+        const customCreditsInput = document.getElementById('mobile-custom-credits');
+        if (value === 'custom') {
+            customCreditsInput.style.display = 'block';
+            customCreditsInput.focus();
+        } else {
+            customCreditsInput.style.display = 'none';
+            customCreditsInput.value = '';
+        }
+    }
+
+    toggleMobileCustomGPA(value) {
+        const customGPAInput = document.getElementById('mobile-custom-gpa');
+        if (value === 'custom') {
+            customGPAInput.style.display = 'block';
+            customGPAInput.focus();
+        } else {
+            customGPAInput.style.display = 'none';
+            customGPAInput.value = '';
+        }
+    }
+
+    addMobileCourse() {
+        if (!this.currentStudent) {
+            alert('Please select a student first.');
+            return;
+        }
+
+        const name = document.getElementById('mobile-course-name').value.trim();
+        const creditsSelect = document.getElementById('mobile-credits-select').value;
+        const customCredits = document.getElementById('mobile-custom-credits').value;
+        const gradeSelect = document.getElementById('mobile-grade-select').value;
+        const customGPA = document.getElementById('mobile-custom-gpa').value;
+
+        if (!name || !gradeSelect) {
+            alert('Please fill in course name and grade.');
+            return;
+        }
+
+        let credits;
+        if (creditsSelect === 'custom') {
+            credits = parseInt(customCredits);
+            if (!credits || credits < 1) {
+                alert('Please enter valid custom credits.');
+                return;
+            }
+        } else {
+            credits = parseInt(creditsSelect);
+        }
+
+        let gradeValue, gradeText;
+        if (gradeSelect === 'custom') {
+            gradeValue = parseFloat(customGPA);
+            if (isNaN(gradeValue) || gradeValue < 0 || gradeValue > 4) {
+                alert('Please enter a valid GPA between 0.0 and 4.0.');
+                return;
+            }
+            gradeText = `${gradeValue.toFixed(1)} GPA`;
+        } else {
+            gradeValue = this.getGradeValue(gradeSelect);
+            gradeText = gradeSelect;
+        }
+
+        const course = {
+            id: Date.now().toString(),
+            name,
+            credits,
+            gradeText,
+            gradeValue,
+            qualityPoints: credits * gradeValue
+        };
+
+        this.courses.push(course);
+        this.currentStudent.courses = [...this.courses];
+        this.saveStudents();
+        this.updateDisplay();
+        this.updateCourseTable();
+        this.updateMobileCourseList();
+        this.clearMobileForm();
+    }
+
+    clearMobileForm() {
+        document.getElementById('mobile-course-name').value = '';
+        document.getElementById('mobile-credits-select').value = '3';
+        document.getElementById('mobile-custom-credits').style.display = 'none';
+        document.getElementById('mobile-custom-credits').value = '';
+        document.getElementById('mobile-grade-select').value = '';
+        document.getElementById('mobile-custom-gpa').style.display = 'none';
+        document.getElementById('mobile-custom-gpa').value = '';
+    }
+
+    updateMobileCourseList() {
+        const courseList = document.getElementById('mobile-course-list');
+
+        if (!this.currentStudent || this.courses.length === 0) {
+            courseList.innerHTML = '<div style="text-align: center; color: var(--text-secondary); padding: 2rem;">No courses added yet.</div>';
+            return;
+        }
+
+        courseList.innerHTML = this.courses.map(course => `
+            <div class="mobile-course-item">
+                <div class="mobile-course-header">
+                    <div class="mobile-course-name">${course.name}</div>
+                    <div class="mobile-course-actions">
+                        <button class="mobile-action-btn edit" onclick="calculator.openEditCourseModal('${course.id}')" title="Edit course">
+                            ✏️
+                        </button>
+                        <button class="mobile-action-btn delete" onclick="calculator.deleteCourse('${course.id}')" title="Delete course">
+                            🗑️
+                        </button>
+                    </div>
+                </div>
+                <div class="mobile-course-details">
+                    <div class="mobile-course-detail">
+                        <div class="mobile-course-detail-label">Credits</div>
+                        <div class="mobile-course-detail-value">${course.credits}</div>
+                    </div>
+                    <div class="mobile-course-detail">
+                        <div class="mobile-course-detail-label">Grade</div>
+                        <div class="mobile-course-detail-value">${course.gradeText}</div>
+                    </div>
+                    <div class="mobile-course-detail">
+                        <div class="mobile-course-detail-label">Quality Points</div>
+                        <div class="mobile-course-detail-value">${course.qualityPoints.toFixed(1)}</div>
+                    </div>
+                </div>
+            </div>
+        `).join('');
     }
 }
 
