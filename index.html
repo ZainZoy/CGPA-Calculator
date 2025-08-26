@@ -161,6 +161,131 @@
             </div>
         </main>
 
+        <!-- Mobile Layout -->
+        <div class="mobile-layout">
+            <div class="mobile-content">
+                <!-- User Management Mobile -->
+                <div class="mobile-section" id="mobile-user-section">
+                    <h2>👤 User Management</h2>
+                    <div class="mobile-input-group">
+                        <label>Select Student</label>
+                        <select id="mobile-student-select">
+                            <option value="">Choose a student...</option>
+                        </select>
+                    </div>
+                    <button class="mobile-add-btn" id="mobile-add-student-btn">
+                        ➕ Add Student
+                    </button>
+                </div>
+
+                <!-- CGPA Summary Mobile -->
+                <div class="mobile-section" id="mobile-summary-section">
+                    <h2>📊 CGPA Summary</h2>
+                    <div class="mobile-stats-grid">
+                        <div class="mobile-stat-card">
+                            <div class="mobile-stat-label">Total Quality Points</div>
+                            <div class="mobile-stat-value" id="mobile-total-quality-points">0.0</div>
+                        </div>
+                        <div class="mobile-stat-card">
+                            <div class="mobile-stat-label">Credits Earned</div>
+                            <div class="mobile-stat-value" id="mobile-credits-earned">0</div>
+                        </div>
+                        <div class="mobile-stat-card cgpa-card">
+                            <div class="mobile-stat-label">Current CGPA</div>
+                            <div class="mobile-stat-value cgpa" id="mobile-current-cgpa">0.00</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Course Management Mobile -->
+                <div class="mobile-section" id="mobile-course-section" style="display: none;">
+                    <h2>📚 Course Management</h2>
+
+                    <div class="mobile-course-input">
+                        <div class="mobile-input-group">
+                            <label>Course Name</label>
+                            <input type="text" id="mobile-course-name" placeholder="Enter course name">
+                        </div>
+                        <div class="mobile-input-group">
+                            <label>Credits</label>
+                            <select id="mobile-credits-select">
+                                <option value="1">1</option>
+                                <option value="3" selected>3</option>
+                                <option value="4">4</option>
+                                <option value="custom">Custom</option>
+                            </select>
+                            <input type="number" id="mobile-custom-credits" placeholder="Enter credits"
+                                style="display: none; margin-top: 0.5rem;" min="1" max="10">
+                        </div>
+                        <div class="mobile-input-group">
+                            <label>Grade</label>
+                            <select id="mobile-grade-select">
+                                <option value="">Select Grade</option>
+                                <option value="A">A</option>
+                                <option value="A-">A-</option>
+                                <option value="B+">B+</option>
+                                <option value="B">B</option>
+                                <option value="B-">B-</option>
+                                <option value="C+">C+</option>
+                                <option value="C">C</option>
+                                <option value="C-">C-</option>
+                                <option value="D+">D+</option>
+                                <option value="D">D</option>
+                                <option value="F">F</option>
+                                <option value="custom">Custom GPA</option>
+                            </select>
+                            <input type="number" id="mobile-custom-gpa" placeholder="Enter GPA (0.0-4.0)"
+                                style="display: none; margin-top: 0.5rem;" min="0" max="4" step="0.1">
+                        </div>
+                        <button class="mobile-add-btn" id="mobile-add-course-btn">
+                            Add Course
+                        </button>
+                    </div>
+
+                    <div class="mobile-course-list" id="mobile-course-list">
+                        <!-- Courses will be populated here -->
+                    </div>
+                </div>
+
+                <!-- Summary Mobile -->
+                <div class="mobile-section" id="mobile-detailed-summary-section" style="display: none;">
+                    <h2>📈 Detailed Summary</h2>
+                    <div class="mobile-stats-grid">
+                        <div class="mobile-stat-card">
+                            <div class="mobile-stat-label">Total Quality Points</div>
+                            <div class="mobile-stat-value" id="mobile-summary-quality-points">0.0</div>
+                        </div>
+                        <div class="mobile-stat-card">
+                            <div class="mobile-stat-label">Total Credits</div>
+                            <div class="mobile-stat-value" id="mobile-summary-credits">0</div>
+                        </div>
+                        <div class="mobile-stat-card cgpa-card">
+                            <div class="mobile-stat-label">Current CGPA</div>
+                            <div class="mobile-stat-value cgpa" id="mobile-summary-cgpa">0.00</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation -->
+        <nav class="mobile-nav">
+            <div class="mobile-nav-items">
+                <button class="mobile-nav-item active" data-mobile-tab="user">
+                    <div class="mobile-nav-icon">👤</div>
+                    <div class="mobile-nav-label">User</div>
+                </button>
+                <button class="mobile-nav-item" data-mobile-tab="course">
+                    <div class="mobile-nav-icon">📚</div>
+                    <div class="mobile-nav-label">Courses</div>
+                </button>
+                <button class="mobile-nav-item" data-mobile-tab="summary">
+                    <div class="mobile-nav-icon">📈</div>
+                    <div class="mobile-nav-label">Summary</div>
+                </button>
+            </div>
+        </nav>
+
         <!-- Creator Credit -->
         <footer class="creator-footer">
             <div class="creator-credit">
