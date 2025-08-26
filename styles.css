@@ -679,31 +679,309 @@ main {
     border-top: 1px solid var(--border-color);
 }
 
+/* Mobile Navigation */
+.mobile-nav {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--bg-secondary);
+    border-top: 1px solid var(--border-color);
+    padding: 0.75rem;
+    z-index: 100;
+}
+
+.mobile-nav-items {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.mobile-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.5rem;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    min-width: 60px;
+}
+
+.mobile-nav-item.active {
+    background: var(--accent-blue);
+    color: white;
+}
+
+.mobile-nav-item:not(.active):hover {
+    background: var(--hover-bg);
+    color: var(--text-primary);
+}
+
+.mobile-nav-icon {
+    font-size: 1.2rem;
+}
+
+.mobile-nav-label {
+    font-size: 0.7rem;
+    font-weight: 500;
+}
+
+/* Mobile Layout */
+.mobile-layout {
+    display: none;
+}
+
+.mobile-content {
+    padding: 1rem;
+    padding-bottom: 100px;
+    /* Space for bottom nav */
+    min-height: 100vh;
+}
+
+.mobile-section {
+    background: var(--bg-secondary);
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    border: 1px solid var(--border-color);
+}
+
+.mobile-section h2 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    font-size: 1.2rem;
+    color: var(--text-primary);
+}
+
+.mobile-stats-grid {
+    display: grid;
+    gap: 1rem;
+}
+
+.mobile-stat-card {
+    background: var(--bg-tertiary);
+    border-radius: 12px;
+    padding: 1.25rem;
+    text-align: center;
+    border: 1px solid var(--border-color);
+}
+
+.mobile-stat-card.cgpa-card {
+    border: 2px solid var(--accent-purple);
+    background: linear-gradient(135deg, var(--bg-tertiary), rgba(139, 92, 246, 0.05));
+}
+
+.mobile-stat-label {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.mobile-stat-value {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--accent-green);
+}
+
+.mobile-stat-value.cgpa {
+    color: var(--accent-purple);
+    font-size: 2.2rem;
+}
+
+/* Mobile Course Management */
+.mobile-course-input {
+    background: var(--bg-tertiary);
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid var(--border-color);
+}
+
+.mobile-input-group {
+    margin-bottom: 1rem;
+}
+
+.mobile-input-group:last-child {
+    margin-bottom: 0;
+}
+
+.mobile-input-group label {
+    display: block;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.mobile-input-group input,
+.mobile-input-group select {
+    width: 100%;
+    padding: 0.875rem;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+}
+
+.mobile-input-group input:focus,
+.mobile-input-group select:focus {
+    outline: none;
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 0 3px rgba(79, 124, 255, 0.1);
+}
+
+.mobile-add-btn {
+    width: 100%;
+    padding: 1rem;
+    background: var(--accent-blue);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.mobile-add-btn:hover {
+    background: #3d6bff;
+    transform: translateY(-1px);
+}
+
+/* Mobile Course List */
+.mobile-course-list {
+    display: grid;
+    gap: 0.75rem;
+}
+
+.mobile-course-item {
+    background: var(--bg-tertiary);
+    border-radius: 12px;
+    padding: 1rem;
+    border: 1px solid var(--border-color);
+}
+
+.mobile-course-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.75rem;
+}
+
+.mobile-course-name {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+}
+
+.mobile-course-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.mobile-action-btn {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 0.25rem;
+    border-radius: 4px;
+    transition: all 0.2s;
+    font-size: 1rem;
+}
+
+.mobile-action-btn:hover {
+    background: var(--hover-bg);
+    color: var(--text-primary);
+}
+
+.mobile-action-btn.edit:hover {
+    color: var(--accent-blue);
+}
+
+.mobile-action-btn.delete:hover {
+    color: var(--error);
+}
+
+.mobile-course-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0.75rem;
+    font-size: 0.85rem;
+}
+
+.mobile-course-detail {
+    text-align: center;
+}
+
+.mobile-course-detail-label {
+    color: var(--text-secondary);
+    margin-bottom: 0.25rem;
+}
+
+.mobile-course-detail-value {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
+
+    /* Hide desktop elements */
+    header nav,
+    .main-content,
+    .creator-footer {
+        display: none;
+    }
+
+    /* Show mobile elements */
+    .mobile-nav,
+    .mobile-layout {
+        display: block;
+    }
+
+    /* Adjust header for mobile */
     header {
-        flex-direction: column;
-        gap: 1rem;
         padding: 1rem;
+        justify-content: space-between;
     }
 
-    nav {
-        flex-wrap: wrap;
-        justify-content: center;
+    .header-actions {
+        gap: 0.5rem;
     }
 
+    .theme-toggle {
+        padding: 0.5rem;
+        font-size: 1.1rem;
+    }
+}
+
+@media (min-width: 769px) {
     .content-card {
         margin: 0 1rem;
         padding: 1.5rem;
     }
 
     .stats-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     }
 
     .input-row {
-        flex-direction: column;
-        align-items: stretch;
+        flex-wrap: wrap;
     }
 
     .course-input {
@@ -716,7 +994,6 @@ main {
     }
 
     .creator-credit {
-        flex-direction: column;
         gap: 0.75rem;
         padding: 1rem 1.5rem;
     }
