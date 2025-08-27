@@ -20,11 +20,13 @@ class CGPACalculator {
         document.getElementById('student-select').addEventListener('change', (e) => this.selectStudent(e.target.value));
         document.getElementById('save-student').addEventListener('click', () => this.saveStudent());
         document.getElementById('cancel-student').addEventListener('click', () => this.closeStudentModal());
+        document.getElementById('delete-student-btn').addEventListener('click', () => this.deleteStudent());
 
         // Course management - inline
         document.getElementById('add-course-inline').addEventListener('click', () => this.addCourseInline());
         document.getElementById('credits-select').addEventListener('change', (e) => this.toggleCustomCredits(e.target.value));
         document.getElementById('grade-select').addEventListener('change', (e) => this.toggleCustomGPA(e.target.value));
+        document.getElementById('clear-all-courses-btn').addEventListener('click', () => this.clearAllCourses());
 
         // Edit course modal
         document.getElementById('save-edit-course').addEventListener('click', () => this.saveEditCourse());
@@ -352,6 +354,7 @@ class CGPACalculator {
         this.saveStudents();
         this.updateDisplay();
         this.updateCourseTable();
+        this.updateMobileCourseList();
         this.closeEditCourseModal();
     }
 
@@ -362,6 +365,28 @@ class CGPACalculator {
             this.saveStudents();
             this.updateDisplay();
             this.updateCourseTable();
+            this.updateMobileCourseList();
+        }
+    }
+
+    clearAllCourses() {
+        if (!this.currentStudent) {
+            alert('Please select a student first.');
+            return;
+        }
+
+        if (this.courses.length === 0) {
+            alert('No courses to clear.');
+            return;
+        }
+
+        if (confirm(`Are you sure you want to delete all ${this.courses.length} courses for ${this.currentStudent.name}? This action cannot be undone.`)) {
+            this.courses = [];
+            this.currentStudent.courses = [];
+            this.saveStudents();
+            this.updateDisplay();
+            this.updateCourseTable();
+            this.updateMobileCourseList();
         }
     }
 
@@ -453,6 +478,44 @@ class CGPACalculator {
         };
     }
 
+    deleteStudent() {
+        if (!this.currentStudent) {
+            alert('Please select a student to delete.');
+            return;
+        }
+
+        const studentName = this.currentStudent.name;
+        const courseCount = this.currentStudent.courses.length;
+
+        let confirmMessage = `Are you sure you want to delete "${studentName}"?`;
+        if (courseCount > 0) {
+            confirmMessage += `\n\nThis will also delete ${courseCount} course${courseCount > 1 ? 's' : ''}.`;
+        }
+        confirmMessage += '\n\nThis action cannot be undone.';
+
+        if (confirm(confirmMessage)) {
+            // Remove student from array
+            this.students = this.students.filter(s => s.id !== this.currentStudent.id);
+
+            // Clear current selection
+            this.currentStudent = null;
+            this.courses = [];
+
+            // Save changes
+            this.saveStudents();
+
+            // Update UI
+            this.loadStudents();
+            this.updateDisplay();
+            this.updateCourseTable();
+            this.updateMobileCourseList();
+
+            // Hide delete button
+            document.getElementById('delete-student-btn').style.display = 'none';
+            document.getElementById('mobile-delete-student-btn').style.display = 'none';
+        }
+    }
+
     updateDisplay() {
         const stats = this.calculateCGPA();
 
@@ -475,6 +538,17 @@ class CGPACalculator {
         document.getElementById('mobile-summary-quality-points').textContent = stats.totalQualityPoints.toFixed(1);
         document.getElementById('mobile-summary-credits').textContent = stats.totalCredits;
         document.getElementById('mobile-summary-cgpa').textContent = stats.cgpa.toFixed(2);
+
+        // Show/hide delete button based on student selection
+        const deleteBtn = document.getElementById('delete-student-btn');
+        const mobileDeleteBtn = document.getElementById('mobile-delete-student-btn');
+        if (this.currentStudent) {
+            deleteBtn.style.display = 'inline-flex';
+            mobileDeleteBtn.style.display = 'block';
+        } else {
+            deleteBtn.style.display = 'none';
+            mobileDeleteBtn.style.display = 'none';
+        }
 
         // Update welcome message
         const welcomeMessage = document.getElementById('welcome-message');
@@ -516,11 +590,13 @@ class CGPACalculator {
         // Mobile student management
         document.getElementById('mobile-add-student-btn').addEventListener('click', () => this.openStudentModal());
         document.getElementById('mobile-student-select').addEventListener('change', (e) => this.selectStudent(e.target.value));
+        document.getElementById('mobile-delete-student-btn').addEventListener('click', () => this.deleteStudent());
 
         // Mobile course management
         document.getElementById('mobile-add-course-btn').addEventListener('click', () => this.addMobileCourse());
         document.getElementById('mobile-credits-select').addEventListener('change', (e) => this.toggleMobileCustomCredits(e.target.value));
         document.getElementById('mobile-grade-select').addEventListener('change', (e) => this.toggleMobileCustomGPA(e.target.value));
+        document.getElementById('mobile-clear-all-courses-btn').addEventListener('click', () => this.clearAllCourses());
     }
 
     switchMobileTab(tabName) {
