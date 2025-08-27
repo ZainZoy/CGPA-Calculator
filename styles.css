@@ -376,6 +376,43 @@ main {
     background-color: #059669;
 }
 
+.btn-danger {
+    background-color: var(--error);
+    color: white;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+.btn-danger:hover {
+    background-color: #dc2626;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(239, 68, 68, 0.4);
+}
+
+.course-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.mobile-clear-btn {
+    padding: 0.5rem;
+    font-size: 1rem;
+    min-width: auto;
+}
+
+.student-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.mobile-student-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
 .course-table-container {
     background-color: var(--bg-tertiary);
     border-radius: 12px;
