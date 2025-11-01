@@ -522,22 +522,22 @@ class CGPACalculator {
         // Update desktop summary
         document.getElementById('total-quality-points').textContent = stats.totalQualityPoints.toFixed(1);
         document.getElementById('credits-earned').textContent = stats.totalCredits;
-        document.getElementById('current-cgpa').textContent = stats.cgpa.toFixed(2);
+        document.getElementById('current-cgpa').textContent = stats.cgpa.toFixed(3);
 
         // Update desktop summary tab
         document.getElementById('summary-quality-points').textContent = stats.totalQualityPoints.toFixed(1);
         document.getElementById('summary-credits').textContent = stats.totalCredits;
-        document.getElementById('summary-cgpa').textContent = stats.cgpa.toFixed(2);
+        document.getElementById('summary-cgpa').textContent = stats.cgpa.toFixed(3);
 
         // Update mobile summary
         document.getElementById('mobile-total-quality-points').textContent = stats.totalQualityPoints.toFixed(1);
         document.getElementById('mobile-credits-earned').textContent = stats.totalCredits;
-        document.getElementById('mobile-current-cgpa').textContent = stats.cgpa.toFixed(2);
+        document.getElementById('mobile-current-cgpa').textContent = stats.cgpa.toFixed(3);
 
         // Update mobile detailed summary
         document.getElementById('mobile-summary-quality-points').textContent = stats.totalQualityPoints.toFixed(1);
         document.getElementById('mobile-summary-credits').textContent = stats.totalCredits;
-        document.getElementById('mobile-summary-cgpa').textContent = stats.cgpa.toFixed(2);
+        document.getElementById('mobile-summary-cgpa').textContent = stats.cgpa.toFixed(3);
 
         // Show/hide delete button based on student selection
         const deleteBtn = document.getElementById('delete-student-btn');
@@ -556,7 +556,7 @@ class CGPACalculator {
             if (this.currentStudent) {
                 welcomeMessage.innerHTML = `
                     <h2>Welcome, ${this.currentStudent.name}!</h2>
-                    <p>Current CGPA: <strong>${stats.cgpa.toFixed(2)}</strong></p>
+                    <p>Current CGPA: <strong>${stats.cgpa.toFixed(3)}</strong></p>
                     <p>Total Credits: <strong>${stats.totalCredits}</strong></p>
                     <p>Use the Course Management tab to add courses and calculate your projected CGPA.</p>
                 `;
@@ -764,3 +764,4 @@ document.addEventListener('keydown', (e) => {
         }
     }
 });
+
